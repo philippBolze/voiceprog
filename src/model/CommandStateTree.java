@@ -3,7 +3,11 @@ package model;
 public class CommandStateTree {
 	
 	private CommandState currentState;
+	
+	//starting state
 	final private CommandState rootState;
+	
+	//combined words that led to the current state
 	private String fullCommand;
 	
 	public CommandStateTree() {
@@ -28,6 +32,8 @@ public class CommandStateTree {
 	public boolean tryNewWord(String newWord) {
 		CommandState newCommandState = currentState.getChild(newWord);
 		
+		//check if currentState has no matching child
+		//else matching child becomes new currentState
 		if( newCommandState == null) {
 			System.out.println("no match");
 			return false;
@@ -39,11 +45,14 @@ public class CommandStateTree {
 		}
 	}
 	
+	
+	//Set current state back to start
 	public void setBack() {
 		currentState = rootState;
 		fullCommand = rootState.getWord();
 	}
 
+	//Is not in use currently. Can be deleted?
 	public String getFullCommand() {
 		return fullCommand;
 	}	

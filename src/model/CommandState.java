@@ -4,7 +4,10 @@ import java.util.HashMap;
 
 public class CommandState {
 	
+	//Latest recognized word that led to this state
 	private String word;
+	
+	//Hashmap of states that might come after this State
 	private HashMap<String, CommandState> children = new HashMap<String, CommandState>();
 	
 	public CommandState(String word) {
@@ -23,6 +26,7 @@ public class CommandState {
 		return word;
 	}
 	
+	//Is not tested and used currently. Can be deleted?
 	public boolean isLeaf() {
 		return children.isEmpty();
 	}

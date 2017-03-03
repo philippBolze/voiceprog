@@ -158,6 +158,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
+		//Testing CommandStateTree
 		CommandStateTree tree = new CommandStateTree();
 		tree.tryNewWord("save");
 		tree.setBack();
