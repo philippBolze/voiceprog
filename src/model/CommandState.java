@@ -37,6 +37,14 @@ public class CommandState {
 		children.put(newChild.getWord(), newChild);
 	}
 	
+	public String getWord() {	
+		return word;
+	}
+	
+	public CommandState getChild(String newWord) {
+		return children.get(newWord);
+	}
+	
 	public boolean action() {
 		try {
 	        // Simulate key press
@@ -50,16 +58,8 @@ public class CommandState {
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
-		//return true if action was performed else false
+		//return true if action was performed else return false
 		return (actionKey_1 != null) ? true : false;	
-	}
-
-	public String getWord() {	
-		return word;
-	}
-	
-	public CommandState getChild(String newWord) {
-		return children.get(newWord);
 	}
 	
 }

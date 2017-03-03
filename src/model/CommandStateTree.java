@@ -21,7 +21,6 @@ public class CommandStateTree {
 		//Delete this after dataload from commands.xml is implemented here
 		breakWord = "break";
 		CommandState cmd1 = new CommandState("new");
-		CommandState cmd2 = new CommandState("class");	
 		CommandState cmd4 = new CommandState("other", KeyEvent.VK_CONTROL, 'N');
 		CommandState cmd5 = new CommandState("save", KeyEvent.VK_CONTROL, 'S');
 		CommandState cmd6 = new CommandState("comment",  KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, '7' );
@@ -29,7 +28,6 @@ public class CommandStateTree {
 		rootState.addChild(cmd1);
 		rootState.addChild(cmd5);
 		rootState.addChild(cmd6);
-		cmd1.addChild(cmd2);
 		cmd1.addChild(cmd4);
 		
 		//At start up the current State should be the root state
