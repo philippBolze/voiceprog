@@ -12,4 +12,4 @@ public <action>  = (plus | minus | multiply | division);
 public <final>   = (show result);
 */
 
-public <words> = ( break | new | class | java project | save );
+public <words> = ( break | new | class | save | other | comment );
