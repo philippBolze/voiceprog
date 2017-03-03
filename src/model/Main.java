@@ -157,6 +157,15 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		CommandStateTree tree = new CommandStateTree();
+		tree.tryNewWord("save");
+		tree.setBack();
+		tree.tryNewWord("new");
+		tree.tryNewWord("one");
+		tree.tryNewWord("save");
+		tree.tryNewWord("class");
+		tree.tryNewWord("class");
 
 		// // Be sure that the user can't start this application by not giving
 		// the

@@ -6,6 +6,6 @@
 
 grammar grammar;
 
-public <numbers> = (one | two | three| four| five | six | seven | eight | nine | ten | alfa | bravo | charlie );
+public <numbers> = (one | two | three| four| five | six | seven | eight | nine | ten );
 public <action>  = (plus | minus | multiply | division);
 public <final>   = (show result);
