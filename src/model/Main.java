@@ -25,6 +25,7 @@ public class Main {
 
 	// LiveRecognizer
 	private LiveSpeechRecognizer recognizer;
+	
 
 	/**
 	 * Constructor
@@ -69,6 +70,8 @@ public class Main {
 	 * Starting the main Thread of speech recognition
 	 */
 	protected void startSpeechThread() {
+		
+		CommandStateTree stateTree = new CommandStateTree();
 
 		// alive?
 		if (speechThread != null && speechThread.isAlive())
@@ -89,6 +92,8 @@ public class Main {
 
 						result = speechResult.getHypothesis();
 						System.out.println("You said: [" + result + "]\n");
+						stateTree.tryNewWord(result);
+
 						// logger.log(Level.INFO, "You said: " + result + "\n")
 
 					} else
@@ -158,15 +163,16 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		//Testing CommandStateTree
-		CommandStateTree tree = new CommandStateTree();
-		tree.tryNewWord("save");
-		tree.setBack();
-		tree.tryNewWord("new");
-		tree.tryNewWord("one");
-		tree.tryNewWord("save");
-		tree.tryNewWord("class");
-		tree.tryNewWord("class");
+		//Testing CommandStateTree. This needs to be moved to a JUnit class
+		CommandStateTree stateTree = new CommandStateTree();
+		stateTree.tryNewWord("save");
+		stateTree.setBack();
+		stateTree.tryNewWord("new");
+		stateTree.tryNewWord("one");
+		stateTree.tryNewWord("save");
+		stateTree.tryNewWord("class");
+		stateTree.tryNewWord("class");
+		stateTree.setBack();
 
 		// // Be sure that the user can't start this application by not giving
 		// the

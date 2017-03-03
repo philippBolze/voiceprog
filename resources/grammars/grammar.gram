@@ -6,6 +6,10 @@
 
 grammar grammar;
 
+/*
 public <numbers> = (one | two | three| four| five | six | seven | eight | nine | ten );
 public <action>  = (plus | minus | multiply | division);
 public <final>   = (show result);
+*/
+
+public <words> = ( break | new | class | java project | save );

@@ -7,14 +7,19 @@ public class CommandStateTree {
 	//starting state
 	final private CommandState rootState;
 	
+	private String breakWord;
+	
 	//combined words that led to the current state
 	private String fullCommand;
+	
+
 	
 	public CommandStateTree() {
 		//Create empty root State
 		rootState = new CommandState("");
 		
 		//Delete this after dataload from commands.xml is implemented here
+		breakWord = "break";
 		CommandState cmd1 = new CommandState("new");
 		CommandState cmd2 = new CommandState("class");	
 		CommandState cmd3 = new CommandState("java project");
@@ -30,6 +35,15 @@ public class CommandStateTree {
 	}
 	
 	public boolean tryNewWord(String newWord) {
+		
+		//Reset tree if new word is break word
+		if(newWord.equals(breakWord)) {
+			setBack();
+			System.out.println(breakWord);
+			return true;
+		}
+		
+		//try to get next state with the name of the new word
 		CommandState newCommandState = currentState.getChild(newWord);
 		
 		//check if currentState has no matching child
