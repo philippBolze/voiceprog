@@ -14,21 +14,30 @@ public class CommandStateTree {
 	//combined words that led to the current state
 	private String fullCommand;
 	
+	//Speech recognition is locked
+	private boolean locked;
+	
 	public CommandStateTree() {
 		//Create empty root State
 		rootState = new CommandState("");
 		
 		//Delete this after dataload from commands.xml is implemented here
 		breakWord = "break";
+		CommandState cmd3 = new CommandState("close");
+		CommandState cmd2 = new CommandState("file", KeyEvent.VK_CONTROL, 'W');
+		CommandState cmd7 = new CommandState("program", KeyEvent.VK_ALT, KeyEvent.VK_F4);
 		CommandState cmd1 = new CommandState("new");
 		CommandState cmd4 = new CommandState("other", KeyEvent.VK_CONTROL, 'N');
 		CommandState cmd5 = new CommandState("save", KeyEvent.VK_CONTROL, 'S');
 		CommandState cmd6 = new CommandState("comment",  KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, '7' );
 		
+		rootState.addChild(cmd3);
 		rootState.addChild(cmd1);
 		rootState.addChild(cmd5);
 		rootState.addChild(cmd6);
 		cmd1.addChild(cmd4);
+		cmd3.addChild(cmd2);
+		cmd3.addChild(cmd7);
 		
 		//At start up the current State should be the root state
 		currentState = rootState;	
