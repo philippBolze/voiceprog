@@ -21,8 +21,16 @@ public class CommandStateTree {
 		//Create empty root State
 		rootState = new CommandState("");
 		
-		//Delete this after dataload from commands.xml is implemented here
 		breakWord = "break";
+		buildTree();
+		
+		//At start up the current State should be the root state
+		currentState = rootState;	
+		fullCommand = rootState.getWord();
+	}
+	
+	private void buildTree() {
+		//Delete this after the dataload from commands.xml is implemented here
 		CommandState cmd3 = new CommandState("close");
 		CommandState cmd2 = new CommandState("file");
 		cmd2.addKeyKombination(KeyEvent.VK_CONTROL, 'W');
@@ -31,6 +39,12 @@ public class CommandStateTree {
 		CommandState cmd1 = new CommandState("new");
 		CommandState cmd4 = new CommandState("other");
 		cmd4.addKeyKombination(KeyEvent.VK_CONTROL, 'N');
+		CommandState cmd8 = new CommandState("class");
+		cmd8.addKeyKombination(KeyEvent.VK_CONTROL, 'N');
+		cmd8.addKeyString("JA");
+		cmd8.addKeyKombination(KeyEvent.VK_ENTER);
+		CommandState cmd9 = new CommandState("escape");
+		cmd9.addKeyKombination(KeyEvent.VK_ESCAPE);
 		CommandState cmd5 = new CommandState("save");
 		cmd5.addKeyKombination(KeyEvent.VK_CONTROL, 'S');
 		CommandState cmd6 = new CommandState("comment");
@@ -39,13 +53,11 @@ public class CommandStateTree {
 		rootState.addChild(cmd1);
 		rootState.addChild(cmd5);
 		rootState.addChild(cmd6);
+		rootState.addChild(cmd9);
 		cmd1.addChild(cmd4);
+		cmd1.addChild(cmd8);
 		cmd3.addChild(cmd2);
 		cmd3.addChild(cmd7);
-		
-		//At start up the current State should be the root state
-		currentState = rootState;	
-		fullCommand = rootState.getWord();
 	}
 	
 	public boolean tryNewWord(String newWord) {

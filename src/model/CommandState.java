@@ -16,11 +16,18 @@ public class CommandState {
 		this.word = word;
 	}
 	
-	public void addkeyString(String keyString) {
+	public void addKeyString(String keyString) {
 		if(keySequence == null) {
 			keySequence = new KeySequence();
 		}
 		keySequence.pushString(keyString);
+	}
+	
+	public void addKeyKombination(int key_1) {
+		if(keySequence == null) {
+			keySequence = new KeySequence();
+		}
+		keySequence.pushKeyCombination(key_1);
 	}
 	
 	public void addKeyKombination(int key_1, int key_2) {

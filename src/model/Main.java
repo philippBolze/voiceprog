@@ -26,7 +26,6 @@ public class Main {
 	// LiveRecognizer
 	private LiveSpeechRecognizer recognizer;
 	
-
 	/**
 	 * Constructor
 	 */

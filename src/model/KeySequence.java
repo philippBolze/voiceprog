@@ -48,12 +48,16 @@ public class KeySequence {
 				for(int j=0; j<combi.size(); j++) {
 					robot.keyPress(combi.get(j));
 				}
+				Thread.sleep(400);
 				for(int j=0; j<combi.size(); j++) {
 					robot.keyRelease(combi.get(j));
 				}	
 			}
 			return true;
 		} catch (AWTException e) {
+			e.printStackTrace();
+			return false;
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 			return false;
 		}
