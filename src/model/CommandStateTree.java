@@ -15,7 +15,7 @@ public class CommandStateTree {
 	private String fullCommand;
 	
 	//Speech recognition is locked
-	private boolean locked;
+	//private boolean locked;
 	
 	public CommandStateTree() {
 		//Create empty root State
@@ -24,13 +24,17 @@ public class CommandStateTree {
 		//Delete this after dataload from commands.xml is implemented here
 		breakWord = "break";
 		CommandState cmd3 = new CommandState("close");
-		CommandState cmd2 = new CommandState("file", KeyEvent.VK_CONTROL, 'W');
-		CommandState cmd7 = new CommandState("program", KeyEvent.VK_ALT, KeyEvent.VK_F4);
+		CommandState cmd2 = new CommandState("file");
+		cmd2.addKeyKombination(KeyEvent.VK_CONTROL, 'W');
+		CommandState cmd7 = new CommandState("program");
+		cmd7.addKeyKombination(KeyEvent.VK_ALT, KeyEvent.VK_F4);
 		CommandState cmd1 = new CommandState("new");
-		CommandState cmd4 = new CommandState("other", KeyEvent.VK_CONTROL, 'N');
-		CommandState cmd5 = new CommandState("save", KeyEvent.VK_CONTROL, 'S');
-		CommandState cmd6 = new CommandState("comment",  KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, '7' );
-		
+		CommandState cmd4 = new CommandState("other");
+		cmd4.addKeyKombination(KeyEvent.VK_CONTROL, 'N');
+		CommandState cmd5 = new CommandState("save");
+		cmd5.addKeyKombination(KeyEvent.VK_CONTROL, 'S');
+		CommandState cmd6 = new CommandState("comment");
+		cmd6.addKeyKombination(KeyEvent.VK_CONTROL, KeyEvent.VK_CONTROL, '7');
 		rootState.addChild(cmd3);
 		rootState.addChild(cmd1);
 		rootState.addChild(cmd5);

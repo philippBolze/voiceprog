@@ -172,7 +172,7 @@ public class Main {
 //		stateTree.tryNewWord("class");
 //		stateTree.tryNewWord("class");
 //		stateTree.setBack();
-//		failing code
+
 		// // Be sure that the user can't start this application by not giving
 		// the
 		// // correct entry string
