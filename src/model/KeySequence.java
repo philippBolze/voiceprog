@@ -40,7 +40,7 @@ public class KeySequence {
 		}
 	}
 	
-	public boolean action() {
+	public void typeSequence() {
 		try {
 			Robot robot = new Robot();
 			for(int i=0; i<keySequence.size(); i++) {
@@ -53,13 +53,10 @@ public class KeySequence {
 					robot.keyRelease(combi.get(j));
 				}	
 			}
-			return true;
 		} catch (AWTException e) {
 			e.printStackTrace();
-			return false;
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
 

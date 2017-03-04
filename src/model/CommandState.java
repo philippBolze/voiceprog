@@ -56,8 +56,14 @@ public class CommandState {
 		return children.get(newWord);
 	}
 	
-	public boolean action() {
-		return (keySequence != null) ? keySequence.action() : false;	
+	public void action() {
+		if (keySequence != null) {
+			keySequence.typeSequence();	
+		}
+	}
+	
+	public boolean isLeaf() {
+		return children.isEmpty();
 	}
 	
 }

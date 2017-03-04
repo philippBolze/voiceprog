@@ -9,6 +9,7 @@ public class CommandStateTree {
 	//starting state
 	final private CommandState rootState;
 	
+	//command that sets back the tree to start
 	final private String breakWord;
 	
 	//combined words that led to the current state
@@ -60,13 +61,13 @@ public class CommandStateTree {
 		cmd3.addChild(cmd7);
 	}
 	
-	public boolean tryNewWord(String newWord) {
+	public void tryNewWord(String newWord) {
 		
 		//Reset tree if new word is break word
 		if (newWord.equals(breakWord)) {
 			setBack();
 			System.out.println(breakWord);
-			return true;
+			return;
 		}
 		
 		//try to get next state with the name of the new word
@@ -76,15 +77,14 @@ public class CommandStateTree {
 		//else matching child becomes new currentState
 		if ( newCommandState == null) {
 			System.out.println("no match");
-			return false;
 		} else {
 			currentState = newCommandState;
 			fullCommand += " " + currentState.getWord(); 
 			System.out.println(fullCommand.substring(1));
-			if (currentState.action()) {
+			currentState.action();
+			if (currentState.isLeaf()) {
 				 setBack();
 			}
-			return true;
 		}
 	}
 	
