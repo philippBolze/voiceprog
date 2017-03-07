@@ -18,6 +18,7 @@ public class CommandStateTree {
 	//Speech recognition is locked
 	//private boolean locked;
 	
+	//The constructor should get the path to commands.xml as parameter
 	public CommandStateTree() {
 		//Create empty root State
 		rootState = new CommandState("");
@@ -92,6 +93,14 @@ public class CommandStateTree {
 	public void setBack() {
 		currentState = rootState;
 		fullCommand = rootState.getWord();
+	}
+	
+	public String getFullCommand() {
+		if( currentState == rootState) {
+			return "";
+		} else {
+			return fullCommand.substring(1);
+		}
 	}
 
 }

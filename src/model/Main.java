@@ -160,18 +160,6 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		//Testing CommandStateTree. This needs to be moved to a JUnit class
-//		CommandStateTree stateTree = new CommandStateTree();
-//		stateTree.tryNewWord("save");
-//		stateTree.setBack();
-//		stateTree.tryNewWord("new");
-//		stateTree.tryNewWord("one");
-//		stateTree.tryNewWord("save");
-//		stateTree.tryNewWord("class");
-//		stateTree.tryNewWord("class");
-//		stateTree.setBack();
-
 		// // Be sure that the user can't start this application by not giving
 		// the
 		// // correct entry string
