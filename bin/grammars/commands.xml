@@ -1,1 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<dictionaries>
+	<dictionary id="eclipse">
+		<cmd spoken="new">
+			<keyCombination>
+				<key>CTRL</key>
+				<key>N</key>
+			</keyCombination>
+			<cmd spoken="class">
+				<keySequence>java</keySequence>
+				<keyCombination>
+					<key>ENTER</key>
+				</keyCombination>
+			</cmd>		
+			<cmd spoken="interface">
+				<keySequence>interface</keySequence>
+				<keyCombination>
+					<key>ENTER</key>
+				</keyCombination>
+			</cmd>
+		</cmd>
+		<cmd spoken="save">
+			<keyCombination>
+				<key>CTRL</key>
+				<key>S</key>
+			</keyCombination>
+		</cmd>
+		<cmd spoken="comment">
+			<keyCombination>
+				<key>CTRL</key>
+				<key>7</key>
+			</keyCombination>
+		</cmd>
+	</dictionary>
+	
+	<dictionary id="alphabet">
+		<cmd spoken="alfa">
+		
+		</cmd>
+	</dictionary>
+</dictionaries>

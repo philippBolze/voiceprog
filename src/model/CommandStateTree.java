@@ -1,6 +1,15 @@
 package model;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
+
+
+
 
 public class CommandStateTree {
 	
@@ -32,7 +41,22 @@ public class CommandStateTree {
 	}
 	
 	private void buildTree() {
-		//Delete this after the dataload from commands.xml is implemented here
+		
+	
+			try {
+				Document doc = new SAXBuilder().build( "party.xml" );
+			} catch (JDOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+		System.out.println("doc.getRootElement()");
+
+		
+//		Delete this after the dataload from commands.xml is implemented here
 		CommandState cmd3 = new CommandState("close");
 		CommandState cmd2 = new CommandState("file");
 		cmd2.addKeyKombination(KeyEvent.VK_CONTROL, 'W');
@@ -50,7 +74,7 @@ public class CommandStateTree {
 		CommandState cmd5 = new CommandState("save");
 		cmd5.addKeyKombination(KeyEvent.VK_CONTROL, 'S');
 		CommandState cmd6 = new CommandState("comment");
-		cmd6.addKeyKombination(KeyEvent.VK_CONTROL, KeyEvent.VK_CONTROL, '7');
+		cmd6.addKeyKombination(KeyEvent.VK_CONTROL, '7');
 		rootState.addChild(cmd3);
 		rootState.addChild(cmd1);
 		rootState.addChild(cmd5);

@@ -5,15 +5,15 @@ import java.util.HashMap;
 public class CommandState {
 	
 	//Latest recognized word that led to this state
-	private String word;
+	private String spoken;
 	
 	//Hashmap of states that might come after this State
 	private HashMap<String, CommandState> children = new HashMap<String, CommandState>();
     
     private KeySequence keySequence;
 	
-	public CommandState(String word) {
-		this.word = word;
+	public CommandState(String spoken) {
+		this.spoken = spoken;
 	}
 	
 	public void addKeyString(String keyString) {
@@ -49,7 +49,7 @@ public class CommandState {
 	}
 	
 	public String getWord() {	
-		return word;
+		return spoken;
 	}
 	
 	public CommandState getChild(String newWord) {

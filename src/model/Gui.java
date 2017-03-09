@@ -16,7 +16,7 @@ public class Gui {
 		JFrame window = new JFrame();
 		window.setVisible(true);
 		window.setTitle("Voice2Key");
-		window.setSize(600, 400);
+		window.setSize(647, 400);
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
