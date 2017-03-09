@@ -8,9 +8,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 
-
-
-
 public class CommandStateTree {
 	
 	private CommandState currentState;
