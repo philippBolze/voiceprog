@@ -20,12 +20,12 @@ public class Main {
 	private String result;
 
 	// Threads
-	Thread	speechThread;
-	Thread	resourcesThread;
+	Thread speechThread;
+	Thread resourcesThread;
 
 	// LiveRecognizer
 	private LiveSpeechRecognizer recognizer;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -151,7 +151,7 @@ public class Main {
 	 * Takes a decision based on the given result
 	 */
 	public void makeDesicion(String result) {
-		//implemented in the part 2
+		// implemented in the part 2
 	}
 
 	/**
