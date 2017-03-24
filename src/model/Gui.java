@@ -17,11 +17,11 @@ public class Gui {
 			e.printStackTrace();
 		}
 
-		JFrame frame = new JFrame("Button Example");  
+		JFrame frame = new JFrame("voice2key");  
 		final JTextField textField = new JTextField();  
-		textField.setBounds(50, 50, 150, 20);  
-		JButton button = new JButton("Click Here");  
-		button.setBounds(50, 100, 120, 30);  
+		textField.setBounds(50, 50, 200, 20);  
+		JButton button = new JButton("Start Listening");  
+		button.setBounds(50, 100, 150, 30);  
 		
 		ActionListener buttonListener = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {  

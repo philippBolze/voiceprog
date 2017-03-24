@@ -11,6 +11,7 @@ public class CommandState {
 	private HashMap<String, CommandState> children = new HashMap<String, CommandState>();
 
 	private KeySequence keySequence;
+	private HttpCommand httpCommand;
 
 	public CommandState(String spoken) {
 		this.spoken = spoken;
@@ -43,6 +44,13 @@ public class CommandState {
 		}
 		keySequence.pushKeyCombination(key_1, key_2, key_3);
 	}
+	
+	public void addHttpCommand(String url) {
+		if (httpCommand == null) {
+			httpCommand = new HttpCommand();
+		}
+		httpCommand.pushHttpCommand(url);
+	}
 
 	public void addChild(CommandState newChild) {
 		children.put(newChild.getWord(), newChild);
@@ -59,6 +67,9 @@ public class CommandState {
 	public void action() {
 		if (keySequence != null) {
 			keySequence.typeSequence();
+		}
+		if (httpCommand != null) {
+			httpCommand.sendCommand();
 		}
 	}
 

@@ -42,14 +42,13 @@ public class KeySequence {
 	public void typeSequence() {
 		try {
 			Robot robot = new Robot();
-			for (int i = 0; i < keySequence.size(); i++) {
-				ArrayList<Integer> combi = keySequence.get(i);
-				for (int j = 0; j < combi.size(); j++) {
-					robot.keyPress(combi.get(j));
+			for(ArrayList<Integer> combination : keySequence) {
+				for (Integer key : combination) {
+					robot.keyPress(key);
 				}
 				Thread.sleep(400);
-				for (int j = 0; j < combi.size(); j++) {
-					robot.keyRelease(combi.get(j));
+				for (Integer key : combination) {
+					robot.keyRelease(key);
 				}
 			}
 		} catch (AWTException e) {

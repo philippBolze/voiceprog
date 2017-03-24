@@ -67,9 +67,12 @@ public class XMLParser {
 						System.out.println("invalid number of key in KeyCombination");
 						break;
 					}
-				}
+				} 
 				if (action.getName().equals("keySequence")) {
 					state.addKeyString(action.getText());
+				}
+				if (action.getName().equals("http")) {
+					state.addHttpCommand(action.getText());
 				}
 			}
 		}
