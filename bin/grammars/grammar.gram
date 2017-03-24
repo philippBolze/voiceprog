@@ -12,4 +12,4 @@ public <action>  = (plus | minus | multiply | division);
 public <final>   = (show result);
 */
 
-public <commands> = ( break | new | save | other | comment | close | program | class | escape | file );
+public <commands> = ( break | new | save | other | comment | close | program | class | escape | file | light off | light on);

@@ -7,7 +7,7 @@ public class CommandState {
 	// Latest recognized word that led to this state
 	private String spoken;
 
-	// Hashmap of states that might come after this State
+	// Hash map of states that might come after this State
 	private HashMap<String, CommandState> children = new HashMap<String, CommandState>();
 
 	private KeySequence keySequence;

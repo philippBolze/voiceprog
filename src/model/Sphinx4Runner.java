@@ -11,7 +11,7 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 
-public class Main {
+public class Sphinx4Runner {
 
 	// Logger
 	private Logger logger = Logger.getLogger(getClass().getName());
@@ -29,7 +29,7 @@ public class Main {
 	/**
 	 * Constructor
 	 */
-	public Main() {
+	public Sphinx4Runner() {
 
 		// Loading Message
 		logger.log(Level.INFO, "Loading..\n");
@@ -164,7 +164,9 @@ public class Main {
 		// the
 		// // correct entry string
 		// if (args.length == 1 && "SPEECH".equalsIgnoreCase(args[0]))
-		new Main();
+	
+		
+		new Sphinx4Runner();
 		// else
 		// Logger.getLogger(Main.class.getName()).log(Level.WARNING, "Give me
 		// the correct entry string..");

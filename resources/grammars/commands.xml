@@ -61,5 +61,13 @@
 			<key>27</key>
 		</keyCombination>
 	</cmd>
+	
+	<cmd spoken="light on">
+		<http>http://192.168.2.111/licht_an.php</http>
+	</cmd>
 
+	<cmd spoken="light off">
+		<http>http://192.168.2.111/licht_aus.php</http>
+	</cmd>
+	
 </dictionary>

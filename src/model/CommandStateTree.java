@@ -1,5 +1,9 @@
 package model;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class CommandStateTree {
 
 	private CommandState currentState;
@@ -13,7 +17,7 @@ public class CommandStateTree {
 	// combined words that led to the current state
 	private String fullCommand;
 
-	// Speech recognition is locked
+	// TODO: Speech recognition is locked
 	// private boolean locked;
 
 	// The constructor should get the path to commands.xml as parameter
@@ -48,10 +52,38 @@ public class CommandStateTree {
 			currentState = newCommandState;
 			fullCommand += " " + currentState.getWord();
 			System.out.println(fullCommand.substring(1));
+			if(fullCommand.substring(1).equals("light on")) {
+				light_on();
+			}
+			if(fullCommand.substring(1).equals("light off")) {
+				light_off();
+			}
 			currentState.action();
 			if (currentState.isLeaf()) {
 				setBack();
 			}
+		}
+	}
+
+	private void light_on() {
+		try {
+		      URL url = new URL("http://192.168.178.33:8083/fhem?cmd.licht_schuppen=set%20licht_schuppen%20on");
+		      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		      conn.setRequestMethod("GET");
+		      conn.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void light_off() {
+		try {
+		      URL url = new URL("http://192.168.178.33:8083/fhem?cmd.licht_schuppen=set%20licht_schuppen%20off");
+		      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		      conn.setRequestMethod("GET");
+		      conn.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
