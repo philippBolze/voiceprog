@@ -42,7 +42,7 @@ public class KeySequence {
 	public void typeSequence() {
 		try {
 			Robot robot = new Robot();
-			for(ArrayList<Integer> combination : keySequence) {
+			for (ArrayList<Integer> combination : keySequence) {
 				for (Integer key : combination) {
 					robot.keyPress(key);
 				}

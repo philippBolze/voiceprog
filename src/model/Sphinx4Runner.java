@@ -15,7 +15,7 @@ public class Sphinx4Runner {
 
 	// Logger
 	private Logger logger = Logger.getLogger(getClass().getName());
-	
+
 	CommandStateTree stateTree = new CommandStateTree();
 
 	// Variables
@@ -24,7 +24,7 @@ public class Sphinx4Runner {
 	// Threads
 	Thread speechThread;
 	Thread resourcesThread;
-	
+
 	boolean stopThreadFlag;
 
 	// LiveRecognizer
@@ -60,12 +60,12 @@ public class Sphinx4Runner {
 		} catch (IOException ex) {
 			logger.log(Level.SEVERE, null, ex);
 		}
-		
+
 		stateTree = new CommandStateTree();
 
 		// Start recognition process pruning previously cached data.
 		recognizer.startRecognition(true);
-		
+
 		stopThreadFlag = true;
 
 		startResourcesThread();
@@ -80,8 +80,8 @@ public class Sphinx4Runner {
 	 */
 	public void startSpeechThread() {
 
-		stopThreadFlag = false;	
-		
+		stopThreadFlag = false;
+
 		// alive?
 		if (speechThread != null && speechThread.isAlive())
 			return;
@@ -89,7 +89,7 @@ public class Sphinx4Runner {
 		// initialise
 		speechThread = new Thread(() -> {
 			logger.log(Level.INFO, "You can start to speak...\n");
-			while (!stopThreadFlag) {	
+			while (!stopThreadFlag) {
 				try {
 					/*
 					 * This method will return when the end of speech is
@@ -108,7 +108,6 @@ public class Sphinx4Runner {
 					} else
 						logger.log(Level.INFO, "I can't understand what you said.\n");
 
-				
 				} catch (Exception ex) {
 					logger.log(Level.WARNING, null, ex);
 				}
@@ -176,8 +175,7 @@ public class Sphinx4Runner {
 		// the
 		// // correct entry string
 		// if (args.length == 1 && "SPEECH".equalsIgnoreCase(args[0]))
-	
-		
+
 		Sphinx4Runner listener = new Sphinx4Runner();
 		listener.startSpeechThread();
 		// else

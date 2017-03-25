@@ -6,15 +6,15 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class HttpCommand {
-	
+
 	ArrayList<String> commandList = new ArrayList<String>();
-	
+
 	public void pushHttpCommand(String url) {
 		commandList.add(url);
 	}
-	
+
 	public void sendCommand() {
-		for(String urlString : commandList) {
+		for (String urlString : commandList) {
 			try {
 				URL url = new URL(urlString);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();

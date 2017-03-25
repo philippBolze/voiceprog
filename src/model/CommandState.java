@@ -44,7 +44,7 @@ public class CommandState {
 		}
 		keySequence.pushKeyCombination(key_1, key_2, key_3);
 	}
-	
+
 	public void addHttpCommand(String url) {
 		if (httpCommand == null) {
 			httpCommand = new HttpCommand();

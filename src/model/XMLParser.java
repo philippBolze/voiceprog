@@ -10,12 +10,12 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 public class XMLParser {
-	
+
 	PrintWriter grammarWriter;
 	String breakWord;
+	CommandState rootState;
 
-	public CommandState readXML(String xmlPath, String grammarPath) {
-		
+	public XMLParser(String xmlPath, String grammarPath) {
 		try {
 			Document doc = new SAXBuilder().build(xmlPath);
 			grammarWriter = new PrintWriter(grammarPath, "UTF-8");
@@ -23,21 +23,20 @@ public class XMLParser {
 			grammarWriter.println("grammar grammar;");
 			grammarWriter.print("public <commands> = ( ");
 			Element root = doc.getRootElement();
-			CommandState rootState = new CommandState("");
+			rootState = new CommandState("");
 			recursiveXMLReader(root, rootState);
-			breakWord = root. getChildText("break");
+			breakWord = root.getChildText("break");
 			grammarWriter.println(breakWord + " );");
 			grammarWriter.close();
-			return rootState;
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-		// return null in case of Exception
-		System.out.println("XML reader failed");
-		return null;
+	}
+
+	public CommandState getRootState() {
+		return rootState;
 	}
 
 	public String getBreakWord() {
@@ -47,7 +46,7 @@ public class XMLParser {
 	private void recursiveXMLReader(Element element, CommandState state) {
 		// for all children of this element
 		for (Element child : element.getChildren("cmd")) {
-			
+
 			grammarWriter.print(child.getAttributeValue("spoken") + " | ");
 
 			// Create a CommandState that represents a node in the
@@ -84,7 +83,7 @@ public class XMLParser {
 						System.out.println("invalid number of key in KeyCombination");
 						break;
 					}
-				} 
+				}
 				if (action.getName().equals("keySequence")) {
 					state.addKeyString(action.getText());
 				}

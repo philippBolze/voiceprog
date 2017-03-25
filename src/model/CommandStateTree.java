@@ -18,9 +18,8 @@ public class CommandStateTree {
 
 	// The constructor should get the path to commands.xml as parameter
 	public CommandStateTree() {
-		XMLParser loader = new XMLParser();
-		rootState = loader.readXML("resources/grammars/commands.xml","resources/grammars/grammar.gram");
-
+		XMLParser loader = new XMLParser("resources/grammars/commands.xml", "resources/grammars/grammar.gram");
+		rootState = loader.getRootState();
 		breakWord = loader.getBreakWord();
 
 		// At start up the current State should be the root state
