@@ -11,9 +11,10 @@ import org.jdom2.input.SAXBuilder;
 
 public class XMLParser {
 	
-	static PrintWriter grammarWriter;
+	PrintWriter grammarWriter;
+	String breakWord;
 
-	public static CommandState readXML(String xmlPath, String grammarPath) {
+	public CommandState readXML(String xmlPath, String grammarPath) {
 		
 		try {
 			Document doc = new SAXBuilder().build(xmlPath);
@@ -24,7 +25,7 @@ public class XMLParser {
 			Element root = doc.getRootElement();
 			CommandState rootState = new CommandState("");
 			recursiveXMLReader(root, rootState);
-			String breakWord = root. getChildText("break");
+			breakWord = root. getChildText("break");
 			grammarWriter.println(breakWord + " );");
 			grammarWriter.close();
 			return rootState;
@@ -39,7 +40,11 @@ public class XMLParser {
 		return null;
 	}
 
-	private static void recursiveXMLReader(Element element, CommandState state) {
+	public String getBreakWord() {
+		return breakWord;
+	}
+
+	private void recursiveXMLReader(Element element, CommandState state) {
 		// for all children of this element
 		for (Element child : element.getChildren("cmd")) {
 			
@@ -58,7 +63,7 @@ public class XMLParser {
 		}
 	}
 
-	private static void buildAction(Element element, CommandState state) {
+	private void buildAction(Element element, CommandState state) {
 		for (Element action : element.getChildren()) {
 			if (!action.getName().equals("cmd")) {
 				if (action.getName().equals("keyCombination")) {
