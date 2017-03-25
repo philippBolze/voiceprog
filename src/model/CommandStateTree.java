@@ -18,7 +18,7 @@ public class CommandStateTree {
 
 	// The constructor should get the path to commands.xml as parameter
 	public CommandStateTree() {
-		rootState = XMLParser.readXML("resources/grammars/commands.xml");
+		rootState = XMLParser.readXML("resources/grammars/commands.xml","resources/grammars/grammar.gram");
 
 		// should also be read from XML file. TODO: implement XMLParser.getBreakWord();
 		breakWord = "break";

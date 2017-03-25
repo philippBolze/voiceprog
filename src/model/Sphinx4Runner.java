@@ -15,6 +15,8 @@ public class Sphinx4Runner {
 
 	// Logger
 	private Logger logger = Logger.getLogger(getClass().getName());
+	
+	CommandStateTree stateTree = new CommandStateTree();
 
 	// Variables
 	private String result;
@@ -22,6 +24,8 @@ public class Sphinx4Runner {
 	// Threads
 	Thread speechThread;
 	Thread resourcesThread;
+	
+	boolean stopThreadFlag;
 
 	// LiveRecognizer
 	private LiveSpeechRecognizer recognizer;
@@ -56,20 +60,28 @@ public class Sphinx4Runner {
 		} catch (IOException ex) {
 			logger.log(Level.SEVERE, null, ex);
 		}
+		
+		stateTree = new CommandStateTree();
 
 		// Start recognition process pruning previously cached data.
 		recognizer.startRecognition(true);
+		
+		stopThreadFlag = true;
 
-		// Start the Thread
-		startSpeechThread();
 		startResourcesThread();
+	}
+
+	public void stopSpeechThread() {
+		this.stopThreadFlag = true;
 	}
 
 	/**
 	 * Starting the main Thread of speech recognition
 	 */
-	protected void startSpeechThread() {
+	public void startSpeechThread() {
 
+		stopThreadFlag = false;	
+		
 		// alive?
 		if (speechThread != null && speechThread.isAlive())
 			return;
@@ -77,9 +89,8 @@ public class Sphinx4Runner {
 		// initialise
 		speechThread = new Thread(() -> {
 			logger.log(Level.INFO, "You can start to speak...\n");
-			CommandStateTree stateTree = new CommandStateTree();
-			try {
-				while (true) {
+			while (!stopThreadFlag) {	
+				try {
 					/*
 					 * This method will return when the end of speech is
 					 * reached. Note that the end pointer will determine the end
@@ -97,12 +108,13 @@ public class Sphinx4Runner {
 					} else
 						logger.log(Level.INFO, "I can't understand what you said.\n");
 
+				
+				} catch (Exception ex) {
+					logger.log(Level.WARNING, null, ex);
 				}
-			} catch (Exception ex) {
-				logger.log(Level.WARNING, null, ex);
+				logger.log(Level.INFO, "SpeechThread has exited...");
 			}
 
-			logger.log(Level.INFO, "SpeechThread has exited...");
 		});
 
 		// Start
@@ -134,7 +146,7 @@ public class Sphinx4Runner {
 					}
 
 					// Sleep some period
-					Thread.sleep(350);
+					Thread.sleep(10);
 				}
 
 			} catch (InterruptedException ex) {
@@ -166,7 +178,8 @@ public class Sphinx4Runner {
 		// if (args.length == 1 && "SPEECH".equalsIgnoreCase(args[0]))
 	
 		
-		new Sphinx4Runner();
+		Sphinx4Runner listener = new Sphinx4Runner();
+		listener.startSpeechThread();
 		// else
 		// Logger.getLogger(Main.class.getName()).log(Level.WARNING, "Give me
 		// the correct entry string..");

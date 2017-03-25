@@ -1,3 +1,4 @@
+
 package model;
 
 import java.awt.event.ActionEvent;
@@ -8,7 +9,14 @@ import javax.swing.UIManager;
 
 public class Gui {
 	
+	JFrame frame;
+	JButton startListeningButton;
+	JButton stopListeningButton;
+	JButton createCommandButton;
+	JTextField textField;
+	Sphinx4Runner listener = new Sphinx4Runner();
 	
+
 	public Gui() {
 		
 		try {
@@ -17,29 +25,50 @@ public class Gui {
 			e.printStackTrace();
 		}
 
-		JFrame frame = new JFrame("voice2key");  
-		final JTextField textField = new JTextField();  
-		textField.setBounds(50, 50, 200, 20);  
-		JButton button = new JButton("Start Listening");  
-		button.setBounds(50, 100, 150, 30);  
+		frame = new JFrame("voice2key");  
+		startListeningButton = new JButton("Start Listening");
+		stopListeningButton = new JButton("Stop Listening");
+		createCommandButton = new JButton("create command");
+		textField = new JTextField();  
 		
-		ActionListener buttonListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {  
-	            textField.setText("voice2key is now listening...");  
-	            new Sphinx4Runner();
-			}  
-		};
-				
-		button.addActionListener(buttonListener);  
-		frame.add(button);
-		frame.add(textField);  
-		frame.setSize(400,400);  
-		frame.setLayout(null);  
-		frame.setVisible(true);  
+		layout();
+		actions();
 
 	}
 
+	public void layout() {
+		frame.add(startListeningButton);
+		frame.add(stopListeningButton);
+		frame.add(createCommandButton);
+		frame.add(textField);  
+		frame.setLayout(null);  
+		frame.setVisible(true);  
+		frame.setSize(800,600);  
+		textField.setBounds(50, 50, 200, 20);  
+		startListeningButton.setBounds(30, 480, 150, 40);  
+		stopListeningButton.setBounds(210, 480, 150, 40);  
+		
+	}
 
+	
+	public void actions() {
+		ActionListener startButtonListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {  
+	            textField.setText("b1");  
+	            listener.startSpeechThread();
+			}  
+		};
+		ActionListener stopButtonListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {  
+	            textField.setText("b2");  
+	            listener.stopSpeechThread();
+			}  
+		};
+		
+		startListeningButton.addActionListener(startButtonListener);
+		stopListeningButton.addActionListener(stopButtonListener);
+	}
+	
 	public static void main(String[] args) {
 
 		@SuppressWarnings("unused")
