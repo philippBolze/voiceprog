@@ -11,12 +11,14 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 
+
+
 public class Sphinx4Runner {
 
 	// Logger
 	private Logger logger = Logger.getLogger(getClass().getName());
 
-	CommandStateTree stateTree = new CommandStateTree();
+	private CommandStateTree stateTree;
 
 	// Variables
 	private String result;
@@ -61,7 +63,7 @@ public class Sphinx4Runner {
 			logger.log(Level.SEVERE, null, ex);
 		}
 
-		stateTree = new CommandStateTree();
+		//stateTree = new CommandStateTree();
 
 		// Start recognition process pruning previously cached data.
 		recognizer.startRecognition(true);
@@ -69,6 +71,10 @@ public class Sphinx4Runner {
 		stopThreadFlag = true;
 
 		startResourcesThread();
+	}
+	
+	public void setCommandStateTree(CommandStateTree commandStateTree) {
+		this.stateTree = commandStateTree;
 	}
 
 	public void stopSpeechThread() {

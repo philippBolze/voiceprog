@@ -1,30 +1,52 @@
 package model;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 public class XMLParser {
 
 	PrintWriter grammarWriter;
 	String breakWord;
 	CommandState rootState;
+	DefaultMutableTreeNode rootTreeNode;
+	Document doc;
+	String xmlPath;
+	Element root;
+	String grammarPath;
+
+	ArrayList<String> completeCommandList = new ArrayList<String>();
 
 	public XMLParser(String xmlPath, String grammarPath) {
+		this.xmlPath = xmlPath;
+		this.grammarPath = grammarPath;
+
+		buildTreeFromXML();
+
+	}
+
+	private void buildTreeFromXML() {
 		try {
-			Document doc = new SAXBuilder().build(xmlPath);
+			doc = new SAXBuilder().build(xmlPath);
 			grammarWriter = new PrintWriter(grammarPath, "UTF-8");
 			grammarWriter.println("#JSGF V1.0;");
 			grammarWriter.println("grammar grammar;");
 			grammarWriter.print("public <commands> = ( ");
-			Element root = doc.getRootElement();
+			root = doc.getRootElement();
+			rootTreeNode = new DefaultMutableTreeNode("Root");
 			rootState = new CommandState("");
-			recursiveXMLReader(root, rootState);
+			recursiveXMLReader(root, rootState, rootTreeNode);
 			breakWord = root.getChildText("break");
 			grammarWriter.println(breakWord + " );");
 			grammarWriter.close();
@@ -35,6 +57,10 @@ public class XMLParser {
 		}
 	}
 
+	public DefaultMutableTreeNode getRootTreeNode() {
+		return rootTreeNode;
+	}
+
 	public CommandState getRootState() {
 		return rootState;
 	}
@@ -43,22 +69,34 @@ public class XMLParser {
 		return breakWord;
 	}
 
-	private void recursiveXMLReader(Element element, CommandState state) {
-		// for all children of this element
+	private void recursiveXMLReader(Element element, CommandState state, DefaultMutableTreeNode treeNode) {
+		/* for all children of this element */
 		for (Element child : element.getChildren("cmd")) {
+			
+			String spoken = child.getAttributeValue("spoken");
+			
+			/* Check if command is already known */
+			if (!completeCommandList.contains(spoken)) {
+				completeCommandList.add(spoken);
+				grammarWriter.print(spoken + " | ");
+			}
 
-			grammarWriter.print(child.getAttributeValue("spoken") + " | ");
-
-			// Create a CommandState that represents a node in the
-			// CommandStateTree
-			CommandState childState = new CommandState(child.getAttributeValue("spoken"));
+			/*
+			 * Create and add a CommandState that represents a node in the
+			 * CommandStateTree
+			 */
+			CommandState childState = new CommandState(spoken);
 			state.addChild(childState);
 
-			// Build possible actions for this state
+			/* Create and add a JTree node for GUI */
+			DefaultMutableTreeNode treeNodeChild = new DefaultMutableTreeNode(spoken);
+			treeNode.add(treeNodeChild);
+
+			/* Build possible actions for this state */
 			buildAction(child, childState);
 
-			// recursive call
-			recursiveXMLReader(child, childState);
+			/* recursive call */
+			recursiveXMLReader(child, childState, treeNodeChild);
 		}
 	}
 
@@ -92,6 +130,61 @@ public class XMLParser {
 				}
 			}
 		}
+	}
+
+	public void addCommand(TreePath path, String name, String url) {
+
+//		int pathCount = path.getPathCount();
+//
+//		for (int i = 0; i < pathCount; i++) {
+//			System.out.print(path.getPathComponent(i).toString());
+//			if (i + 1 != pathCount) {
+//				System.out.print("|");
+//			}
+//		}
+//		System.out.println("");
+
+		recursiveAddCommand(root, 1, path, name, url);
+
+		XMLOutputter xmlOutput = new XMLOutputter();
+
+		xmlOutput.setFormat(Format.getPrettyFormat());
+		try {
+			xmlOutput.output(doc, System.out);
+			xmlOutput.output(doc, new FileWriter(xmlPath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		buildTreeFromXML();
+
+	}
+
+	private void recursiveAddCommand(Element element, int index, TreePath path, String name, String url) {
+
+		if (index + 1 != path.getPathCount()) {
+			System.out.println("END");
+			Element cmd = new Element("cmd");
+			cmd.setAttribute("spoken", name);
+			Element http = new Element("http");
+			http.addContent(url);
+			cmd.addContent(http);
+			element.addContent(cmd);
+			return;
+		}
+
+		String cmdString = path.getPathComponent(index).toString();
+		System.out.println(cmdString);
+		for (Element child : element.getChildren("cmd")) {
+			System.out.println("    " + child.getAttributeValue("spoken"));
+			if (child.getAttributeValue("spoken").equals(cmdString)) {
+				System.out.println("FOUND");
+				recursiveAddCommand(child, ++index, path, name, url);
+
+			}
+
+		}
+
 	}
 
 }

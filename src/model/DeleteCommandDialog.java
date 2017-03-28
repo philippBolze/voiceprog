@@ -14,6 +14,9 @@ public class DeleteCommandDialog extends JDialog {
 
 	public DeleteCommandDialog() {
 
+		this.setSize(420, 200);
+		this.setModal(true);
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -34,7 +37,21 @@ public class DeleteCommandDialog extends JDialog {
 
 		this.setLayout(null);
 		this.setVisible(true);
-		this.setSize(420, 200);
+
+		// ActionListener confirmButtonListener = new ActionListener() {
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		//
+		// }
+		// };
+		//
+		// ActionListener cancelButtonListener = new ActionListener() {
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		//
+		// }
+		// };
+
 	}
 
 	public static void main(String[] args) {

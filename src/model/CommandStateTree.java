@@ -17,8 +17,7 @@ public class CommandStateTree {
 	// private boolean locked;
 
 	// The constructor should get the path to commands.xml as parameter
-	public CommandStateTree() {
-		XMLParser loader = new XMLParser("resources/grammars/commands.xml", "resources/grammars/grammar.gram");
+	public CommandStateTree(XMLParser loader) {
 		rootState = loader.getRootState();
 		breakWord = loader.getBreakWord();
 

@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.UIManager;
-
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-//import javax.swing.tree.TreeNode;
 
 public class Gui {
 
@@ -19,6 +19,7 @@ public class Gui {
 
 	// command tree
 	JScrollPane scrollPane;
+	JTree tree;
 
 	JButton startListeningButton;
 	JButton stopListeningButton;
@@ -35,17 +36,31 @@ public class Gui {
 	JButton cancelCommandButton;
 
 	Sphinx4Runner listener;
+	CommandStateTree commandStateTree;
+	XMLParser loader;
+	
+	 TreePath path;
 
 	public Gui() {
 
+		/* native look and feel */
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Wurzel");
-		JTree tree = new JTree(root);
+		/* Build Menu */
+		// Border bo = new LineBorder(Color.yellow);
+		JMenuBar bar = new JMenuBar();
+		// bar.setBorder(bo);
+		JMenu menu = new JMenu("File");
+		bar.add(menu);
+		frame.setJMenuBar(bar);
+		menu.insert(new JMenuItem("Save"), 0);
+		menu.insert(new JMenuItem("Load"), 1);
+
+		buildCommandTree();
 
 		commandLabel = new JLabel("Command:");
 		urlLabel = new JLabel("URL:");
@@ -56,7 +71,7 @@ public class Gui {
 		startListeningButton = new JButton("Start Listening");
 		stopListeningButton = new JButton("Stop Listening");
 		createCommandButton = new JButton("create new command");
-		deleteCommandButton = new JButton("delete command");
+		deleteCommandButton = new JButton("Delete Command");
 		confirmCommandButton = new JButton("Enter");
 		cancelCommandButton = new JButton("Cancel");
 
@@ -64,7 +79,20 @@ public class Gui {
 		actions();
 	}
 
-	public void layout() {
+	private void buildCommandTree() {
+
+		loader = new XMLParser("resources/grammars/commands.xml", "resources/grammars/grammar.gram");
+
+		commandStateTree = new CommandStateTree(loader);
+
+		listener = new Sphinx4Runner();
+
+		listener.setCommandStateTree(commandStateTree);
+
+		tree = new JTree(loader.getRootTreeNode());
+	}
+
+	private void layout() {
 		frame.add(scrollPane);
 		frame.add(commandLabel);
 		frame.add(urlLabel);
@@ -102,10 +130,21 @@ public class Gui {
 		confirmCommandButton.setVisible(false);
 		cancelCommandButton.setVisible(false);
 
+		createCommandButton.setEnabled(false);
+		deleteCommandButton.setEnabled(false);
+
 	}
+
+	
 
 	public void actions() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ActionListener confirmButtonListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loader.addCommand(path, "fun", "111.111.111.111");
+			}
+		};
 		ActionListener createButtonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -115,6 +154,8 @@ public class Gui {
 				urlTextField.setVisible(true);
 				confirmCommandButton.setVisible(true);
 				cancelCommandButton.setVisible(true);
+
+				deleteCommandButton.setEnabled(false);
 			}
 		};
 		ActionListener cancelButtonListener = new ActionListener() {
@@ -126,12 +167,18 @@ public class Gui {
 				urlTextField.setVisible(false);
 				confirmCommandButton.setVisible(false);
 				cancelCommandButton.setVisible(false);
+				deleteCommandButton.setEnabled(true);
+			}
+		};
+		ActionListener deleteButtonListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new DeleteCommandDialog();
 			}
 		};
 		ActionListener startButtonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener = new Sphinx4Runner();
 				listener.startSpeechThread();
 			}
 		};
@@ -142,10 +189,34 @@ public class Gui {
 			}
 		};
 
+		deleteCommandButton.addActionListener(deleteButtonListener);
 		createCommandButton.addActionListener(createButtonListener);
 		cancelCommandButton.addActionListener(cancelButtonListener);
 		startListeningButton.addActionListener(startButtonListener);
 		stopListeningButton.addActionListener(stopButtonListener);
+		confirmCommandButton.addActionListener(confirmButtonListener);
+
+		tree.addTreeSelectionListener(createSelectionListener());
+
+	}
+
+	private TreeSelectionListener createSelectionListener() {
+		return new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				createCommandButton.setEnabled(true);
+				deleteCommandButton.setEnabled(true);
+				 path = e.getPath();
+				 int pathCount = path.getPathCount();
+				
+				 for (int i = 0; i < pathCount; i++) {
+				 System.out.print(path.getPathComponent(i).toString());
+					 if (i + 1 != pathCount) {
+						 System.out.print("|");
+					 }
+				}
+				System.out.println("");
+			}
+		};
 	}
 
 	public static void main(String[] args) {

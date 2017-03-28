@@ -53,32 +53,12 @@
     <keyCombination>
       <key>27</key>
     </keyCombination>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
   </cmd>
   <cmd spoken="light on">
     <http>http://192.168.2.111/licht_an.php</http>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
   </cmd>
   <cmd spoken="light off">
     <http>http://192.168.2.111/licht_aus.php</http>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
-    <cmd spoken="fun">
-      <http>111.111.111.111</http>
-    </cmd>
   </cmd>
+  <huhlhlh />
 </dictionary>
