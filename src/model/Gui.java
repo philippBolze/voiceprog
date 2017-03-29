@@ -38,8 +38,8 @@ public class Gui {
 	Sphinx4Runner listener;
 	CommandStateTree commandStateTree;
 	XMLParser loader;
-	
-	 TreePath path;
+
+	TreePath selectionPath;
 
 	public Gui() {
 
@@ -135,14 +135,12 @@ public class Gui {
 
 	}
 
-	
-
 	public void actions() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ActionListener confirmButtonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				loader.addCommand(path, "fun", "111.111.111.111");
+				loader.addCommand(selectionPath, "fun", "111.111.111.111");
 			}
 		};
 		ActionListener createButtonListener = new ActionListener() {
@@ -205,16 +203,7 @@ public class Gui {
 			public void valueChanged(TreeSelectionEvent e) {
 				createCommandButton.setEnabled(true);
 				deleteCommandButton.setEnabled(true);
-				 path = e.getPath();
-				 int pathCount = path.getPathCount();
-				
-				 for (int i = 0; i < pathCount; i++) {
-				 System.out.print(path.getPathComponent(i).toString());
-					 if (i + 1 != pathCount) {
-						 System.out.print("|");
-					 }
-				}
-				System.out.println("");
+				selectionPath = e.getPath();
 			}
 		};
 	}

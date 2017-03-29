@@ -27,7 +27,7 @@ public class Sphinx4Runner {
 	Thread speechThread;
 	Thread resourcesThread;
 
-	boolean stopThreadFlag;
+	boolean stopThreadFlag = false;
 
 	// LiveRecognizer
 	private LiveSpeechRecognizer recognizer;
@@ -69,8 +69,6 @@ public class Sphinx4Runner {
 		recognizer.startRecognition(true);
 
 		stopThreadFlag = true;
-
-		startResourcesThread();
 	}
 	
 	public void setCommandStateTree(CommandStateTree commandStateTree) {
@@ -85,8 +83,8 @@ public class Sphinx4Runner {
 	 * Starting the main Thread of speech recognition
 	 */
 	public void startSpeechThread() {
-
-		stopThreadFlag = false;
+		
+		startResourcesThread();
 
 		// alive?
 		if (speechThread != null && speechThread.isAlive())
@@ -141,7 +139,7 @@ public class Sphinx4Runner {
 			try {
 
 				// Detect if the microphone is available
-				while (true) {
+				while (!stopThreadFlag) {
 					if (AudioSystem.isLineSupported(Port.Info.MICROPHONE)) {
 						// logger.log(Level.INFO, "Microphone is available.\n")
 					} else {

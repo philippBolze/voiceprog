@@ -25,7 +25,6 @@ public class XMLParser {
 	String xmlPath;
 	Element root;
 	String grammarPath;
-
 	ArrayList<String> completeCommandList = new ArrayList<String>();
 
 	public XMLParser(String xmlPath, String grammarPath) {
@@ -38,6 +37,7 @@ public class XMLParser {
 
 	private void buildTreeFromXML() {
 		try {
+			completeCommandList.clear();
 			doc = new SAXBuilder().build(xmlPath);
 			grammarWriter = new PrintWriter(grammarPath, "UTF-8");
 			grammarWriter.println("#JSGF V1.0;");
@@ -48,7 +48,7 @@ public class XMLParser {
 			rootState = new CommandState("");
 			recursiveXMLReader(root, rootState, rootTreeNode);
 			breakWord = root.getChildText("break");
-			grammarWriter.println(breakWord + " );");
+			grammarWriter.print(breakWord + " );");
 			grammarWriter.close();
 		} catch (JDOMException e) {
 			e.printStackTrace();
@@ -72,9 +72,9 @@ public class XMLParser {
 	private void recursiveXMLReader(Element element, CommandState state, DefaultMutableTreeNode treeNode) {
 		/* for all children of this element */
 		for (Element child : element.getChildren("cmd")) {
-			
+
 			String spoken = child.getAttributeValue("spoken");
-			
+
 			/* Check if command is already known */
 			if (!completeCommandList.contains(spoken)) {
 				completeCommandList.add(spoken);
@@ -134,20 +134,33 @@ public class XMLParser {
 
 	public void addCommand(TreePath path, String name, String url) {
 
-//		int pathCount = path.getPathCount();
-//
-//		for (int i = 0; i < pathCount; i++) {
-//			System.out.print(path.getPathComponent(i).toString());
-//			if (i + 1 != pathCount) {
-//				System.out.print("|");
-//			}
-//		}
-//		System.out.println("");
+		int pathDepth = path.getPathCount();
+		String currentCommand;
+		Element element = root;
 
-		recursiveAddCommand(root, 1, path, name, url);
+		for (int depth = 0; depth < pathDepth; depth++) {
+			currentCommand = path.getPathComponent(depth).toString();
+			System.out.println(currentCommand);
+			for (Element child : element.getChildren("cmd")) {
+				System.out.println("    " + child.getAttributeValue("spoken"));
+				if (child.getAttributeValue("spoken").equals(currentCommand)) {
+					element = child;
+					if (depth + 1 == pathDepth) {
+						Element cmd = new Element("cmd");
+						cmd.setAttribute("spoken", name);
+						Element http = new Element("http");
+						http.addContent(url);
+						cmd.addContent(http);
+						element.addContent(cmd);
+					}
+					break;
+				}
+
+			}
+
+		}
 
 		XMLOutputter xmlOutput = new XMLOutputter();
-
 		xmlOutput.setFormat(Format.getPrettyFormat());
 		try {
 			xmlOutput.output(doc, System.out);
@@ -157,34 +170,6 @@ public class XMLParser {
 		}
 
 		buildTreeFromXML();
-
-	}
-
-	private void recursiveAddCommand(Element element, int index, TreePath path, String name, String url) {
-
-		if (index + 1 != path.getPathCount()) {
-			System.out.println("END");
-			Element cmd = new Element("cmd");
-			cmd.setAttribute("spoken", name);
-			Element http = new Element("http");
-			http.addContent(url);
-			cmd.addContent(http);
-			element.addContent(cmd);
-			return;
-		}
-
-		String cmdString = path.getPathComponent(index).toString();
-		System.out.println(cmdString);
-		for (Element child : element.getChildren("cmd")) {
-			System.out.println("    " + child.getAttributeValue("spoken"));
-			if (child.getAttributeValue("spoken").equals(cmdString)) {
-				System.out.println("FOUND");
-				recursiveAddCommand(child, ++index, path, name, url);
-
-			}
-
-		}
-
 	}
 
 }
