@@ -1,63 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary id="eclipse">
   <break>break</break>
-  <cmd spoken="new">
-    <cmd spoken="class">
-      <keyCombination>
-        <key>17</key>
-        <key>78</key>
-      </keyCombination>
-      <keySequence>JA</keySequence>
-      <keyCombination>
-        <key>10</key>
-      </keyCombination>
-    </cmd>
-    <cmd spoken="interface">
-      <keyCombination>
-        <key>17</key>
-        <key>78</key>
-      </keyCombination>
-      <keySequence>IN</keySequence>
-      <keyCombination>
-        <key>10</key>
-      </keyCombination>
-    </cmd>
-  </cmd>
-  <cmd spoken="save">
-    <keyCombination>
-      <key>17</key>
-      <key>83</key>
-    </keyCombination>
-  </cmd>
-  <cmd spoken="comment">
-    <keyCombination>
-      <key>17</key>
-      <key>55</key>
-    </keyCombination>
-  </cmd>
-  <cmd spoken="close">
-    <cmd spoken="file">
-      <keyCombination>
-        <key>17</key>
-        <key>115</key>
-      </keyCombination>
-    </cmd>
-    <cmd spoken="program">
-      <keyCombination>
-        <key>18</key>
-        <key>115</key>
-      </keyCombination>
-    </cmd>
-  </cmd>
-  <cmd spoken="escape">
-    <keyCombination>
-      <key>27</key>
-    </keyCombination>
-  </cmd>
   <cmd spoken="light on">
     <http>http://192.168.2.111/licht_an.php</http>
   </cmd>
-  <cmd spoken="light off">
-    <http>http://192.168.2.111/licht_aus.php</http>
+  <cmd spoken="close shutter">
+    <http />
+  </cmd>
+  <cmd spoken="abc">
+    <http>def</http>
   </cmd>
 </dictionary>

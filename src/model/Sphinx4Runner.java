@@ -68,7 +68,6 @@ public class Sphinx4Runner {
 		// Start recognition process pruning previously cached data.
 		recognizer.startRecognition(true);
 
-		stopThreadFlag = true;
 	}
 	
 	public void setCommandStateTree(CommandStateTree commandStateTree) {
@@ -83,13 +82,11 @@ public class Sphinx4Runner {
 	 * Starting the main Thread of speech recognition
 	 */
 	public void startSpeechThread() {
-		
-		startResourcesThread();
 
 		// alive?
 		if (speechThread != null && speechThread.isAlive())
 			return;
-
+		
 		// initialise
 		speechThread = new Thread(() -> {
 			logger.log(Level.INFO, "You can start to speak...\n");
@@ -179,8 +176,11 @@ public class Sphinx4Runner {
 		// the
 		// // correct entry string
 		// if (args.length == 1 && "SPEECH".equalsIgnoreCase(args[0]))
-
+		
+		XMLParser loader = new XMLParser("resources/grammars/commands.xml", "resources/grammars/grammar.gram");
 		Sphinx4Runner listener = new Sphinx4Runner();
+		CommandStateTree commandStateTree = new CommandStateTree(loader);
+		listener.setCommandStateTree(commandStateTree);
 		listener.startSpeechThread();
 		// else
 		// Logger.getLogger(Main.class.getName()).log(Level.WARNING, "Give me

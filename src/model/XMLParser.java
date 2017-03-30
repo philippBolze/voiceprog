@@ -131,35 +131,8 @@ public class XMLParser {
 			}
 		}
 	}
-
-	public void addCommand(TreePath path, String name, String url) {
-
-		int pathDepth = path.getPathCount();
-		String currentCommand;
-		Element element = root;
-
-		for (int depth = 0; depth < pathDepth; depth++) {
-			currentCommand = path.getPathComponent(depth).toString();
-			System.out.println(currentCommand);
-			for (Element child : element.getChildren("cmd")) {
-				System.out.println("    " + child.getAttributeValue("spoken"));
-				if (child.getAttributeValue("spoken").equals(currentCommand)) {
-					element = child;
-					if (depth + 1 == pathDepth) {
-						Element cmd = new Element("cmd");
-						cmd.setAttribute("spoken", name);
-						Element http = new Element("http");
-						http.addContent(url);
-						cmd.addContent(http);
-						element.addContent(cmd);
-					}
-					break;
-				}
-
-			}
-
-		}
-
+	
+	public void updateXML() {
 		XMLOutputter xmlOutput = new XMLOutputter();
 		xmlOutput.setFormat(Format.getPrettyFormat());
 		try {
@@ -170,6 +143,56 @@ public class XMLParser {
 		}
 
 		buildTreeFromXML();
+		
+	}
+	
+	public Element getSelectedCommand(TreePath path) {
+		int pathDepth = path.getPathCount();
+		String currentCommand;
+		Element element = root;
+		System.out.println(path.getPathComponent(0).toString());
+		if (path.getPathComponent(0).toString().equals("Root") && pathDepth == 1) {
+			return element;
+		}
+		for (int depth = 0; depth < pathDepth; depth++) {
+			currentCommand = path.getPathComponent(depth).toString();
+			System.out.println(currentCommand);
+			for (Element child : element.getChildren("cmd")) {
+				System.out.println("    " + child.getAttributeValue("spoken"));
+				if (child.getAttributeValue("spoken").equals(currentCommand)) {
+					element = child;
+					if (depth + 1 == pathDepth) {
+						return element;
+					}
+					break;
+				}
+			}
+		}
+		return element;	
+	}
+	
+	public void removeCommand(TreePath path) {
+		
+		Element toBeDeleted = getSelectedCommand(path);
+		toBeDeleted.setName("to_be_deleted");
+		
+		System.out.println(((Element) toBeDeleted.getParent()).getName());
+		((Element) toBeDeleted.getParent()).removeChild("to_be_deleted");
+		
+		updateXML();
+	}
+
+	public void addCommand(TreePath path, String name, String url) {
+		Element cmd = new Element("cmd");
+		cmd.setAttribute("spoken", name);
+		if (!url.equals("")) {
+			Element http = new Element("http");
+			http.addContent(url);
+			cmd.addContent(http);		
+		}
+		getSelectedCommand(path).addContent(cmd);	
+
+		updateXML();
 	}
 
 }

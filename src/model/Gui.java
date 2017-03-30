@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -40,6 +42,7 @@ public class Gui {
 	XMLParser loader;
 
 	TreePath selectionPath;
+	DefaultMutableTreeNode selectedTreeNode;
 
 	public Gui() {
 
@@ -60,39 +63,34 @@ public class Gui {
 		menu.insert(new JMenuItem("Save"), 0);
 		menu.insert(new JMenuItem("Load"), 1);
 
-		buildCommandTree();
-
 		commandLabel = new JLabel("Command:");
 		urlLabel = new JLabel("URL:");
 		commandTextField = new JTextField();
 		urlTextField = new JTextField();
-
-		scrollPane = new JScrollPane(tree);
 		startListeningButton = new JButton("Start Listening");
 		stopListeningButton = new JButton("Stop Listening");
 		createCommandButton = new JButton("create new command");
 		deleteCommandButton = new JButton("Delete Command");
 		confirmCommandButton = new JButton("Enter");
 		cancelCommandButton = new JButton("Cancel");
-
+		
+		buildCommandTree();
 		layout();
 		actions();
 	}
 
 	private void buildCommandTree() {
-
+		System.out.println("load commands from XML");
 		loader = new XMLParser("resources/grammars/commands.xml", "resources/grammars/grammar.gram");
-
 		commandStateTree = new CommandStateTree(loader);
-
-		listener = new Sphinx4Runner();
-
-		listener.setCommandStateTree(commandStateTree);
-
 		tree = new JTree(loader.getRootTreeNode());
+		scrollPane = new JScrollPane(tree);
 	}
 
 	private void layout() {
+		/*
+		 * TODO: store all swing elements into list. Automate frame.add(element) 
+		 */
 		frame.add(scrollPane);
 		frame.add(commandLabel);
 		frame.add(urlLabel);
@@ -108,6 +106,7 @@ public class Gui {
 		frame.setLayout(null);
 		frame.setVisible(true);
 		frame.setSize(800, 600);
+		
 		scrollPane.setBounds(30, 20, 300, 300);
 
 		createCommandButton.setBounds(360, 20, 200, 40);
@@ -132,7 +131,6 @@ public class Gui {
 
 		createCommandButton.setEnabled(false);
 		deleteCommandButton.setEnabled(false);
-
 	}
 
 	public void actions() {
@@ -140,7 +138,9 @@ public class Gui {
 		ActionListener confirmButtonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				loader.addCommand(selectionPath, "fun", "111.111.111.111");
+				loader.addCommand(selectionPath, commandTextField.getText(), urlTextField.getText());
+				DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+				model.insertNodeInto(new DefaultMutableTreeNode(commandTextField.getText()), selectedTreeNode, 0);
 			}
 		};
 		ActionListener createButtonListener = new ActionListener() {
@@ -171,12 +171,17 @@ public class Gui {
 		ActionListener deleteButtonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new DeleteCommandDialog();
+				 loader.removeCommand(selectionPath);
+				 DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+				 model.removeNodeFromParent(selectedTreeNode);
+				//new DeleteCommandDialog();
 			}
 		};
 		ActionListener startButtonListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				listener = new Sphinx4Runner();
+				listener.setCommandStateTree(commandStateTree);
 				listener.startSpeechThread();
 			}
 		};
@@ -204,6 +209,7 @@ public class Gui {
 				createCommandButton.setEnabled(true);
 				deleteCommandButton.setEnabled(true);
 				selectionPath = e.getPath();
+				selectedTreeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 			}
 		};
 	}
